@@ -50,7 +50,7 @@ head:
 	jal		getvalue
 	move	$s1, $v0
 
-	bne		$s0, $s1, badexit
+	bne		$s0, $s1, notsym
 	
 #loop control
 	addi	$t0, $t0, 1
@@ -60,7 +60,7 @@ head:
 	blt		$t1, $t9, head
 	j		exit
 	
-badexit:
+notsym:
 	#write not symm
 	la		$a0, bad
 	li		$v0, 4
