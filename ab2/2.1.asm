@@ -26,7 +26,6 @@ main:
 		
 
 head:
-	jal		printdebug
 	move	$a0, $t0
 	move	$a1, $t1
 	jal		getvalue
