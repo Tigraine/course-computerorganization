@@ -1,5 +1,6 @@
 .data
-	result:	.asciiz 	"Fibonacci Zahl f(n): "
+	result:	.asciiz 	"Fibonacci Reihe: "
+	space:	.asciiz 	", "
 	input:	.asciiz 	"Die wievielte Zahl wollen Sie berechnen?: "
 .text
 
@@ -8,22 +9,30 @@
 main:
 
 	li		$s7, 2
+	li		$s0, 0
 
 	la		$a0, input
 	jal		write
 	
 	jal		read
-	move	$s0, $v0
+	move	$s3, $v0		#we want first 10 fibs
 
+	la		$a0, result
+	jal		write
 
+head:
+	addi	$s0, $s0, 1	
+	
 	move	$a0, $s0
 	jal		fib
 	move	$s1, $v0		#save return value
 
-	la		$a0, result
-	jal		write
 	move	$a0, $s1
 	jal		writeint
+	la		$a0, space
+	jal		write
+
+	bge		$s3, $s0, head
 
 	j		exit			#end of program
 
