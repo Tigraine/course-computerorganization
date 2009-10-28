@@ -1,11 +1,15 @@
 .data
-	matrix: .word 1, 6, 9, 5
-			.word 6, 3, 5, 6
-			.word 9, 5, 3, 3
-			.word 5, 6, 3, 1
-	n: .word 4
+	matrix: .word 1, 6, 9, 5, 1
+			.word 6, 3, 5, 6, 2
+			.word 9, 5, 3, 3, 1
+			.word 5, 6, 3, 1, 2
+			.word 1, 2, 1, 2, 4
+	n: .word 5
 	good: .asciiz "symmetrisch"
 	bad: .asciiz "nicht symmetrisch"
+	position: .asciiz "Position: "
+	space:		.asciiz " "
+	newline:	.asciiz "\n"
 .text
 .globl main
 
@@ -22,7 +26,7 @@ main:
 		
 
 head:
-
+	jal		printdebug
 	move	$a0, $t0
 	move	$a1, $t1
 	jal		getvalue
@@ -37,10 +41,10 @@ head:
 	
 #loop control
 	addi	$t0, $t0, 1
-	blt		$t0, $t8, head		#t0 smaller word length
+	blt		$t0, $t9, head		#t0 smaller word length
 	li		$t0, 0				#reset to start and move next row
 	addi	$t1, $t1, 1
-	blt		$t1, $t8, head
+	blt		$t1, $t9, head
 	j		exit
 	
 badexit:
@@ -69,4 +73,26 @@ getvalue:
 	la 		$t5, matrix		#matrix start address
 	add		$t5, $t5, $t2
 	lw		$v0, ($t5)
+	jr		$ra
+
+printdebug:
+	li		$v0, 4
+	la		$a0, position
+	syscall
+	li		$v0, 1
+	move	$a0, $t0
+	syscall
+	
+	li		$v0, 4
+	la		$a0, space
+	syscall
+
+	li		$v0, 1
+	move	$a0, $t1
+	syscall
+
+	li		$v0, 4
+	la		$a0, newline	
+	syscall
+
 	jr		$ra
